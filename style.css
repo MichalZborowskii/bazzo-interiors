@@ -191,3 +191,18 @@ nav{font-size:12px;letter-spacing:.7px}.header-contact{font-size:12px;letter-spa
  .breadcrumb a:before{content:none}
  .breadcrumb a,.breadcrumb span{display:inline;min-height:0;font-size:10px;font-weight:400;letter-spacing:1.1px;border-bottom:0;padding:0}
 }
+
+/* Materiały na podstronie realizacji: te same kafle co wcześniej, ale na jasnym
+   tle strony — cztery w rzędzie, z próbką koloru i kodem pod fakturą. */
+.project-materials .material-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;max-width:1035px;margin-top:6px}
+.project-materials .material{margin:0;display:flex;flex-direction:column}
+.project-materials .material picture{display:block;border-radius:22px;overflow:hidden;aspect-ratio:3/4;background:#dce0d8}
+.project-materials .material img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,.61,.36,1)}
+.project-materials .material:hover img{transform:scale(1.06)}
+.project-materials .swatch{display:block;height:58px;border-radius:11px;margin:13px 0 12px;box-shadow:inset 0 0 0 1px rgba(41,46,44,.16)}
+.project-materials .material figcaption{display:flex;flex-direction:column;gap:3px}
+.project-materials .material strong{font-size:13px;font-weight:500;letter-spacing:.4px;text-transform:uppercase;color:var(--ink)}
+.project-materials .material figcaption span{font-size:11px;line-height:1.45;color:#5d6360;letter-spacing:.2px}
+.project-materials .material code{font-family:inherit;font-size:10px;color:#8a908c;letter-spacing:1px;padding-top:3px;text-transform:uppercase}
+@media(max-width:950px){.project-materials .material-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.project-materials .swatch{height:50px}}
+@media(max-width:680px){.project-materials .material-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-materials .material picture{border-radius:16px}.project-materials .swatch{height:40px;margin:10px 0 9px}.project-materials .material strong{font-size:12px}.project-materials .material figcaption span{font-size:10px}}
