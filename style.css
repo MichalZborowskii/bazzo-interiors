@@ -102,3 +102,92 @@ nav{font-size:12px;letter-spacing:.7px}.header-contact{font-size:12px;letter-spa
 .material code{font-family:inherit;font-size:10px;color:#7f8983;letter-spacing:1px;padding-top:2px}
 @media(max-width:950px){.material-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.materials .section-heading{flex-direction:column;align-items:start;gap:22px;margin-bottom:38px}.swatch{height:52px}}
 @media(max-width:680px){.materials-main{grid-column:1}.material-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.material picture{border-radius:20px}.swatch{height:44px;margin:11px 0 9px}.material strong{font-size:12px}.material figcaption span{font-size:10px}}
+
+/* Kafelki realizacji: całe są linkiem do podstrony, z podpisem pod zdjęciem. */
+.project-link{display:block}
+.project-photo{position:relative;display:block;overflow:hidden;background:#dce0d8;padding:7px;border:1px solid #b5b9b2}
+.project-landscape .project-photo{aspect-ratio:4/3}
+.project-portrait .project-photo{aspect-ratio:3/4}
+.project-photo picture{display:block;width:100%;height:100%}
+.project-photo img{width:100%;height:100%;object-fit:contain;transition:transform .8s cubic-bezier(.22,.61,.36,1)}
+.project-link:hover .project-photo img{transform:scale(1.03)}
+.project-arrow{position:absolute;right:17px;bottom:17px;width:42px;height:42px;border-radius:50%;background:var(--cream);display:grid;place-items:center;font-size:23px;transition:background .3s,color .3s,transform .3s}
+.project-link:hover .project-arrow{background:var(--forest);color:var(--cream);transform:rotate(45deg)}
+.project figcaption{display:flex;flex-direction:column;gap:5px;padding-top:18px}
+.project figcaption strong{font-size:17px;font-weight:500;letter-spacing:-.4px;text-transform:uppercase}
+.project figcaption span{font-size:12px;line-height:1.5;color:#5d6360;letter-spacing:.2px}
+.project-link:focus-visible{outline:2px solid var(--green);outline-offset:6px}
+@media(max-width:680px){.project-photo{padding:5px}.project figcaption{padding-top:14px}.project figcaption strong{font-size:15px}.project figcaption span{font-size:11px}.project-arrow{width:36px;height:36px;font-size:19px;right:12px;bottom:12px}}
+
+/* Miniatury realizacji: jednolita ramka 4:3 dla równej siatki niezależnie od
+   orientacji zdjęcia; kadr wypełnia ramkę (środek jest najważniejszy). */
+.gallery .project-landscape .project-photo,.gallery .project-portrait .project-photo{aspect-ratio:4/3}
+.gallery .project-photo img{object-fit:cover}
+@media(max-width:680px){.gallery .project-landscape .project-photo,.gallery .project-portrait .project-photo{aspect-ratio:4/3}}
+
+/* ---- Podstrony realizacji ---- */
+.breadcrumb{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:26px 4.5% 0;font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#6b716d}
+.breadcrumb a:hover{color:var(--ink)}
+.breadcrumb [aria-current]{color:var(--ink)}
+.project-hero{padding:44px 4.5% 56px;border-bottom:1px solid var(--line)}
+.project-hero h1{font-size:clamp(38px,5vw,74px);letter-spacing:-.05em;line-height:1.05;margin:26px 0 0;max-width:15ch}
+.project-hero .lead{margin-top:22px;font-size:17px;line-height:1.65;max-width:62ch;color:#4a504d}
+.project-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px;margin:46px 0 0;padding-top:28px;border-top:1px solid var(--line)}
+.meta-item dt{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:#6b716d}
+.meta-item dd{margin:8px 0 0;font-size:15px;line-height:1.5}
+.project-body{padding-top:72px;padding-bottom:16px}
+.project-text{grid-column:2;max-width:68ch}
+.project-text p{font-size:16px;line-height:1.75;margin:0}
+.project-text p+p{margin-top:20px}
+.project-materials{padding-top:64px;padding-bottom:64px}
+.project-materials .materials-main{grid-column:2}
+.project-materials h2{font-size:clamp(28px,3.1vw,46px);letter-spacing:-.04em;line-height:1.15;margin-bottom:34px}
+.project-materials h2 em{color:var(--green)}
+.spec-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px;margin:0;max-width:1035px}
+.spec{display:flex;justify-content:space-between;gap:20px;padding:17px 0;border-top:1px solid var(--line)}
+.spec dt{font-size:13px;font-weight:500;letter-spacing:.2px;text-transform:uppercase}
+.spec dd{margin:0;font-size:13px;color:#5d6360;text-align:right}
+.project-materials .note{margin:26px 0 0;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#8a908c}
+.project-gallery{padding-top:20px;padding-bottom:80px}
+.shots{grid-column:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 26px}
+.shot{margin:0}
+.shot .photo-button{padding:7px;border:1px solid #b5b9b2;background:#dce0d8;width:100%;display:block;position:relative;overflow:hidden}
+.shot-poziome .photo-button{aspect-ratio:4/3}
+.shot-pionowe .photo-button{aspect-ratio:3/4}
+.shot picture{display:block;width:100%;height:100%}
+.shot img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.22,.61,.36,1)}
+.shot .photo-button:hover img{transform:scale(1.03)}
+.shot .photo-button>span{position:absolute;right:17px;bottom:17px;width:42px;height:42px;border-radius:50%;background:var(--cream);display:grid;place-items:center;font-size:23px;transition:background .3s,color .3s,transform .3s}
+.shot .photo-button:hover>span{background:var(--forest);color:var(--cream);transform:rotate(45deg)}
+.project-nav{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:0 4.5% 78px}
+.pn{display:flex;flex-direction:column;gap:9px;padding:26px 0;border-top:1px solid var(--line)}
+.pn.next{text-align:right}
+.pn span{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:#6b716d}
+.pn strong{font-size:20px;font-weight:500;letter-spacing:-.5px;text-transform:uppercase;transition:color .25s}
+.pn:hover strong{color:var(--green)}
+@media(max-width:950px){.project-meta{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}.spec-list{grid-template-columns:minmax(0,1fr);gap:0}.project-hero{padding-bottom:44px}}
+@media(max-width:680px){
+ .breadcrumb{padding:18px 6% 0;font-size:10px;gap:7px}
+ .project-hero{padding:28px 6% 34px}.project-hero h1{font-size:clamp(30px,8vw,44px);margin-top:18px}.project-hero .lead{font-size:15px;margin-top:16px}
+ .project-meta{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:30px;padding-top:22px}.meta-item dd{font-size:14px}
+ .project-body{padding-top:44px}.project-text,.project-materials .materials-main,.shots{grid-column:1}
+ .project-materials{padding-top:44px;padding-bottom:44px}.project-materials h2{margin-bottom:22px}
+ .shots{grid-template-columns:minmax(0,1fr);gap:22px}.shot .photo-button{padding:5px}.shot .photo-button>span{width:36px;height:36px;font-size:19px;right:12px;bottom:12px}
+ .project-nav{grid-template-columns:minmax(0,1fr);gap:0;padding:0 6% 44px}.pn.next{text-align:left}.pn strong{font-size:17px}
+}
+/* Galeria realizacji: równa siatka — wszystkie kadry 4:3, żeby wiersze nie
+   zostawiały dziur przy mieszaniu zdjęć pionowych i poziomych. */
+.shots .shot-poziome .photo-button,.shots .shot-pionowe .photo-button{aspect-ratio:4/3}
+/* Nawigacja między realizacjami to <nav>, więc nie może dziedziczyć stylów
+   mobilnego menu głównego (strzałka ::before, wysokość pozycji, obramowanie). */
+@media(max-width:680px){
+ .project-nav a:before{content:none}
+ .project-nav a{display:flex;min-height:0;font-size:inherit;font-weight:inherit;letter-spacing:normal;border-bottom:0;padding:26px 0}
+ .project-nav{position:static;inset:auto;background:none;overflow:visible;margin:0;padding:0 6% 44px}
+}
+/* Breadcrumb również jest <nav> — wyklucz go ze stylów mobilnego menu głównego. */
+@media(max-width:680px){
+ .breadcrumb{position:static;inset:auto;background:none;overflow:visible;margin:0;padding:18px 6% 0;flex-direction:row;flex-wrap:wrap;gap:7px;border:0}
+ .breadcrumb a:before{content:none}
+ .breadcrumb a,.breadcrumb span{display:inline;min-height:0;font-size:10px;font-weight:400;letter-spacing:1.1px;border-bottom:0;padding:0}
+}

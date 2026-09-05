@@ -18,7 +18,8 @@
     if (restoreFocus) menu.focus();
   };
   const showPhoto = (index) => {
-    const list = photos(); active = (index + list.length) % list.length;
+    const list = photos(); if (!list.length || !dialog()) return;
+    active = (index + list.length) % list.length;
     const webp = list[active].dataset.photoWebp;
     dialog().querySelector('source').srcset = webp || '';
     dialog().querySelector('img').src = list[active].dataset.photo;
@@ -30,11 +31,11 @@
     if (!target) return;
     if (target.matches('.menu-toggle')) toggleMenu(target.getAttribute('aria-expanded') !== 'true');
     if (target.matches('nav a, header .logo, .header-contact')) toggleMenu(false);
-    if (target.matches('[data-photo]')) { showPhoto(photos().indexOf(target)); dialog().showModal(); document.body.style.overflow = 'hidden'; }
-    if (target.matches('.close-dialog')) dialog().close();
+    if (target.matches('[data-photo]') && dialog()) { showPhoto(photos().indexOf(target)); dialog().showModal(); document.body.style.overflow = 'hidden'; }
+    if (target.matches('.close-dialog')) dialog()?.close();
     if (target.matches('#previous')) showPhoto(active - 1);
     if (target.matches('#next')) showPhoto(active + 1);
-    if (target === dialog()) { const r = target.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) target.close(); }
+    if (dialog() && target === dialog()) { const r = target.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) target.close(); }
   });
   on(document, 'close', event => { if (event.target === dialog()) { document.body.style.overflow = ''; photos()[active]?.focus(); } }, { capture: true });
   on(document, 'keydown', event => {
@@ -47,7 +48,7 @@
         if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
       }
     }
-    if (dialog().open) { if (event.key === 'ArrowRight') showPhoto(active + 1); if (event.key === 'ArrowLeft') showPhoto(active - 1); }
+    if (dialog()?.open) { if (event.key === 'ArrowRight') showPhoto(active + 1); if (event.key === 'ArrowLeft') showPhoto(active - 1); }
   });
   const carousel = document.querySelector('[data-carousel]');
   if (carousel) {
