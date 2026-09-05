@@ -59,7 +59,7 @@
     const render = () => {
       track.style.transform = `translate3d(${-slide * 100}%,0,0)`;
       slides.forEach((el, i) => { el.classList.toggle('is-active', i === slide); el.toggleAttribute('aria-hidden', i !== slide); });
-      dots.forEach((dot, i) => dot.setAttribute('aria-selected', String(i === slide)));
+      dots.forEach((dot, i) => dot.toggleAttribute('aria-current', i === slide));
     };
     const goTo = (index, resume = true) => {
       slide = (index + slides.length) % slides.length;
