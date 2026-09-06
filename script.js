@@ -62,11 +62,15 @@
       slides.forEach((el, i) => { el.classList.toggle('is-active', i === slide); el.toggleAttribute('aria-hidden', i !== slide); });
       dots.forEach((dot, i) => dot.toggleAttribute('aria-current', i === slide));
     };
-    const goTo = (index, resume = true) => {
+    // Autoplay chodzi bez przerwy; każda interakcja tylko resetuje odliczanie.
+    const start = () => {
+      clearInterval(timer);
+      if (!still.matches) timer = setInterval(() => { slide = (slide + 1) % slides.length; render(); }, 5000);
+    };
+    const goTo = (index) => {
       slide = (index + slides.length) % slides.length;
       render();
-      clearInterval(timer);
-      if (resume && !still.matches) timer = setInterval(() => goTo(slide + 1, false), 6000);
+      start();
     };
     on(carousel, 'click', event => {
       const hit = event.target.closest('.carousel-dots button');
@@ -103,7 +107,7 @@
       if (event.key === 'ArrowRight') { event.preventDefault(); goTo(slide + 1); }
       if (event.key === 'ArrowLeft')  { event.preventDefault(); goTo(slide - 1); }
     });
-    on(document, 'visibilitychange', () => { if (document.hidden) clearInterval(timer); else goTo(slide); });
+    on(document, 'visibilitychange', () => { if (document.hidden) clearInterval(timer); else start(); });
     goTo(0);
   }
 
