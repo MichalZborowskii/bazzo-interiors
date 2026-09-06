@@ -20,8 +20,6 @@
   const showPhoto = (index) => {
     const list = photos(); if (!list.length || !dialog()) return;
     active = (index + list.length) % list.length;
-    const webp = list[active].dataset.photoWebp;
-    dialog().querySelector('source').srcset = webp || '';
     dialog().querySelector('img').src = list[active].dataset.photo;
     dialog().querySelector('img').alt = list[active].querySelector('img').alt;
     document.querySelector('#photo-counter').textContent = `${String(active + 1).padStart(2, '0')} / ${String(list.length).padStart(2, '0')}`;
