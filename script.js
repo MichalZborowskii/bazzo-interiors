@@ -69,19 +69,39 @@
       if (resume && !still.matches) timer = setInterval(() => goTo(slide + 1, false), 6000);
     };
     on(carousel, 'click', event => {
-      const hit = event.target.closest('.carousel-arrow, .carousel-dots button');
-      if (!hit) return;
-      if (hit.matches('.prev')) goTo(slide - 1);
-      else if (hit.matches('.next')) goTo(slide + 1);
-      else goTo(dots.indexOf(hit));
+      const hit = event.target.closest('.carousel-dots button');
+      if (hit) goTo(dots.indexOf(hit));
     });
-    // Przeciąganie palcem na ekranach dotykowych.
-    let startX = null;
-    on(carousel, 'pointerdown', event => { startX = event.clientX; });
-    on(carousel, 'pointerup', event => {
-      if (startX === null) return;
+    // Przeciąganie myszą i palcem - jedyny sposób przewijania poza kropkami.
+    let startX = null, dragging = false;
+    on(carousel, 'pointerdown', event => {
+      if (event.target.closest('.carousel-dots')) return;
+      startX = event.clientX; dragging = true;
+      carousel.setPointerCapture?.(event.pointerId);
+    });
+    on(carousel, 'pointermove', event => {
+      if (!dragging) return;
+      const dx = event.clientX - startX;
+      // podąża za palcem, żeby gest był wyczuwalny
+      track.style.transition = 'none';
+      track.style.transform = `translate3d(calc(${-slide * 100}% + ${dx}px),0,0)`;
+    });
+    const endDrag = (event) => {
+      if (!dragging) return;
+      dragging = false;
+      track.style.transition = '';
       const dx = event.clientX - startX; startX = null;
-      if (Math.abs(dx) > 45) goTo(slide + (dx < 0 ? 1 : -1));
+      if (Math.abs(dx) > 50) goTo(slide + (dx < 0 ? 1 : -1)); else goTo(slide);
+    };
+    on(carousel, 'pointerup', endDrag);
+    on(carousel, 'pointercancel', endDrag);
+    on(carousel, 'dragstart', event => event.preventDefault());
+    // Strzałki klawiatury działają, gdy karuzela ma fokus.
+    carousel.tabIndex = 0;
+    carousel.setAttribute('aria-label', 'Realizacje - użyj strzałek lub przeciągnij');
+    on(carousel, 'keydown', event => {
+      if (event.key === 'ArrowRight') { event.preventDefault(); goTo(slide + 1); }
+      if (event.key === 'ArrowLeft')  { event.preventDefault(); goTo(slide - 1); }
     });
     on(document, 'visibilitychange', () => { if (document.hidden) clearInterval(timer); else goTo(slide); });
     goTo(0);

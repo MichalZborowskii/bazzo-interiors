@@ -53,14 +53,14 @@ nav{font-size:12px;letter-spacing:.7px}.header-contact{font-size:12px;letter-spa
 .hero-slide picture{display:block;width:100%;height:100%}
 .hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center 55%;transform:scale(1.06);transition:transform 1.4s cubic-bezier(.22,.61,.36,1)}
 .hero-slide.is-active img{transform:scale(1)}
-.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border:0;border-radius:50%;background:rgba(234,233,228,.86);color:var(--ink);font-size:19px;line-height:1;display:grid;place-items:center;opacity:0;transition:opacity .3s,background .3s;backdrop-filter:blur(3px)}
-.carousel-arrow.prev{left:14px}.carousel-arrow.next{right:14px}
-.carousel:hover .carousel-arrow,.carousel-arrow:focus-visible{opacity:1}
-.carousel-arrow:hover{background:var(--cream)}
+
+
+
+
 .carousel-dots{position:absolute;left:0;right:0;bottom:14px;display:flex;justify-content:center;gap:9px}
 .carousel-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:rgba(234,233,228,.55);transition:background .3s,transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.35)}
 .carousel-dots button[aria-current]{background:var(--cream);transform:scale(1.5)}
-@media(max-width:680px){.carousel-arrow{opacity:1;width:38px;height:38px;font-size:16px}.carousel-arrow.prev{left:9px}.carousel-arrow.next{right:9px}.carousel-dots{bottom:11px}}
+@media(max-width:680px){.carousel-dots{bottom:11px}}
 @media(prefers-reduced-motion:reduce){.carousel-track{transition:none}.hero-slide img{transform:none;transition:none}}
 
 /* Sekcja O pracowni bez zdjęcia: nota o autorze jako stopka tekstu, w jednej kolumnie z akapitami. */
@@ -206,3 +206,24 @@ nav{font-size:12px;letter-spacing:.7px}.header-contact{font-size:12px;letter-spa
 .project-materials .material code{font-family:inherit;font-size:10px;color:#8a908c;letter-spacing:1px;padding-top:3px;text-transform:uppercase}
 @media(max-width:950px){.project-materials .material-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.project-materials .swatch{height:50px}}
 @media(max-width:680px){.project-materials .material-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.project-materials .material picture{border-radius:16px}.project-materials .swatch{height:40px;margin:10px 0 9px}.project-materials .material strong{font-size:12px}.project-materials .material figcaption span{font-size:10px}}
+
+/* Karuzela bez strzałek: przeciąganie i kropki. Kropki są jedynym widocznym
+   sterowaniem, więc muszą być wyraźniejsze i mieć obszar dotyku 44px. */
+.hero-photo .carousel{cursor:grab;touch-action:pan-y}
+.hero-photo .carousel:active{cursor:grabbing}
+.carousel-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:0}
+.carousel-dots button{width:26px;height:34px;padding:0;border:0;background:none;display:grid;place-items:center;border-radius:0;box-shadow:none;transition:none}
+.carousel-dots button:before{content:'';width:8px;height:8px;border-radius:50%;background:rgba(234,233,228,.55);box-shadow:0 1px 5px rgba(0,0,0,.4);transition:background .3s,transform .3s}
+.carousel-dots button:hover:before{background:rgba(255,255,255,.85)}
+.carousel-dots button[aria-current]{background:none}
+.carousel-dots button[aria-current]:before{background:var(--cream);transform:scale(1.45)}
+.carousel-dots button:focus-visible{outline:2px solid var(--cream);outline-offset:-4px}
+@media(max-width:680px){.carousel-dots{bottom:7px}.carousel-dots button{width:30px;height:38px}}
+
+/* Logo jako obraz zamiast składanego tekstu. */
+.logo{display:block;width:auto;height:auto;font-size:0;letter-spacing:normal}
+.logo picture{display:block}
+.logo img{display:block;width:auto;height:24px;object-fit:contain}
+footer .logo img{height:22px}
+@media(max-width:950px){.logo img{height:23px}}
+@media(max-width:680px){.logo img{height:25px}footer .logo img{height:24px}}
