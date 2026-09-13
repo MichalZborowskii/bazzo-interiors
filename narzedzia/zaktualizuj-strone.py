@@ -16,6 +16,12 @@ DRY = "--sprawdz" in sys.argv
 # --kolory-z-excela wyłącza automat i bierze kody wpisane w arkuszu
 AUTO_KOLOR = "--kolory-z-excela" not in sys.argv
 
+# Zdjęcie na kafelek strony głównej, gdy nie ma nim być pierwsze z galerii.
+# Numer odpowiada pozycji w galerii (1-4).
+MINIATURA = {
+    "mieszkanie-olsztyn": 4,   # kuchnia zamiast salonu
+}
+
 SLUGS = {
     "Mieszkanie w Olsztynie": "mieszkanie-olsztyn",
     "mieszkanie pszasnyska": "mieszkanie-zoliborz",
@@ -340,21 +346,27 @@ def aktualizuj_strone_glowna(dane):
     plik = ROOT / "index.html"
     s = oryg = plik.read_text(encoding="utf-8")
     for slug, d in dane.items():
-        mini = ASSETS / "realizacje" / slug / "01.webp"
+        nr = MINIATURA.get(slug, 1)
+        mini = ASSETS / "realizacje" / slug / f"{nr:02d}.webp"
+        if not mini.exists():
+            mini = ASSETS / "realizacje" / slug / "01.webp"
+            nr = 1
         if not mini.exists():
             continue
         w, h = wymiary(mini)
         v = wersja(mini)
         wzor = re.compile(
-            rf'(<img src="assets/realizacje/{re.escape(slug)}/01\.webp)\?v=\w+("[^>]*?)'
+            rf'(<img src="assets/realizacje/{re.escape(slug)}/)\d+\.webp\?v=\w+("[^>]*?)'
             rf'width="\d+" height="\d+"')
-        s, ile = wzor.subn(lambda m: f'{m.group(1)}?v={v}{m.group(2)}width="{w}" height="{h}"', s, count=1)
+        s, ile = wzor.subn(
+            lambda m: f'{m.group(1)}{nr:02d}.webp?v={v}{m.group(2)}width="{w}" height="{h}"', s, count=1)
         if not ile:
             problemy.append(f"strona główna: nie znaleziono kafelka dla {slug}")
         # alt kafelka = opis pierwszego zdjęcia z galerii
-        if d["galeria"] and d["galeria"][0].get("alt"):
-            s = re.sub(rf'(<img src="assets/realizacje/{re.escape(slug)}/01\.webp\?v=\w+"[^>]*?alt=")[^"]*(")',
-                       lambda m: m.group(1) + e(d["galeria"][0]["alt"]) + m.group(2), s, count=1)
+        opis = d["galeria"][nr - 1].get("alt") if len(d["galeria"]) >= nr else None
+        if opis:
+            s = re.sub(rf'(<img src="assets/realizacje/{re.escape(slug)}/\d+\.webp\?v=\w+"[^>]*?alt=")[^"]*(")',
+                       lambda m: m.group(1) + e(opis) + m.group(2), s, count=1)
         # nazwa realizacji w podpisie kafelka
         if d["nazwa"]:
             s = re.sub(rf'(href="realizacje/{re.escape(slug)}\.html".*?<figcaption><strong>)([^<]*)(</strong>)',
