@@ -55,10 +55,18 @@
     const dots = [...carousel.querySelectorAll('.carousel-dots button')];
     const still = matchMedia('(prefers-reduced-motion: reduce)');
     let slide = 0, timer;
+    const wskaznik = carousel.querySelector('.carousel-dots');
     const render = () => {
       track.style.transform = `translate3d(${-slide * 100}%,0,0)`;
       slides.forEach((el, i) => { el.classList.toggle('is-active', i === slide); el.toggleAttribute('aria-hidden', i !== slide); });
       dots.forEach((dot, i) => dot.toggleAttribute('aria-current', i === slide));
+      // Licznik i linia postępu - widoczne tylko na wąskich ekranach (patrz CSS).
+      if (wskaznik) {
+        const nr = String(slide + 1).padStart(2, '0');
+        const ile = String(slides.length).padStart(2, '0');
+        wskaznik.setAttribute('data-licznik', `${nr}/${ile}`);
+        wskaznik.style.setProperty('--postep', `${((slide + 1) / slides.length) * 100}%`);
+      }
     };
     // Autoplay chodzi bez przerwy; każda interakcja tylko resetuje odliczanie.
     const start = () => {

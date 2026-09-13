@@ -285,6 +285,8 @@ def blok_materialy(s, slug, d):
             f'<code>{e(kod)}</code></figcaption></figure>')
     return "".join(out), len(out)
 
+# Strzałka ↗ ma selektor wariantu tekstowego (U+FE0E) - bez niego iOS
+# renderuje ją jako kolorowe emoji.
 def blok_galeria(slug, d):
     out, n = [], 0
     for i, g in enumerate(d["galeria"], 1):
@@ -300,7 +302,7 @@ def blok_galeria(slug, d):
         out.append(
             f'<figure class="shot {klasa}"><button class="photo-button" data-photo="../assets/{rel}?v={v}" '
             f'aria-label="Powiększ zdjęcie {n}"><img src="../assets/{rel}?v={v}" alt="{e(g["alt"])}" '
-            f'loading="lazy" width="{w}" height="{h}"><span>↗</span></button></figure>')
+            f'loading="lazy" width="{w}" height="{h}"><span>↗︎</span></button></figure>')
     return "".join(out), n
 
 def aktualizuj(slug, d):
