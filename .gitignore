@@ -4,3 +4,8 @@ node_modules/
 zrodla/
 narzedzia/venv/
 ~$*.xlsx
+
+# zdjęcia źródłowe od osoby od realizacji - na stronę idą przetworzone do assets/
+do-wrzucenia/**/galeria/*
+do-wrzucenia/**/materialy/*
+!do-wrzucenia/**/.gitkeep
