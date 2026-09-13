@@ -18,7 +18,7 @@ AUTO_KOLOR = "--kolory-z-excela" not in sys.argv
 
 SLUGS = {
     "Mieszkanie w Olsztynie": "mieszkanie-olsztyn",
-    "Kancelaria prawna": "kancelaria-prawna",
+    "mieszkanie pszasnyska": "mieszkanie-zoliborz",
     "Salon fryzjerski": "salon-fryzjerski",
     "Mieszkanie": "mieszkanie",
 }
@@ -266,7 +266,11 @@ def blok_materialy(s, slug, d):
             continue
         rel, w, h, v = got
         if not kod:
-            kod = dominujacy_kolor(ASSETS / rel)
+            # w trybie --sprawdz plik docelowy jeszcze nie istnieje - liczymy ze źródła
+            plik_koloru = ASSETS / rel
+            if not plik_koloru.exists():
+                plik_koloru = znajdz(WRZUC / slug / "materialy", m.get("_klucz", i))
+            kod = dominujacy_kolor(plik_koloru) if plik_koloru else "#888888"
         alt = m["alt"] or (f"Faktura: {m['material'].lower()}" if m["material"] else "Faktura materiału")
         out.append(
             f'<figure class="material"><img src="../assets/{rel}?v={v}" alt="{e(alt)}" loading="lazy" '
