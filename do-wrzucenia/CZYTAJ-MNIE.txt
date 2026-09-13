@@ -1,0 +1,33 @@
+BAZZO INTERIORS — zdjęcia do realizacji
+=======================================
+
+Zdjęć NIE wklejaj do Excela. Wrzucasz je tutaj, jako zwykłe pliki.
+
+Każda realizacja ma swój folder, a w nim dwa podfoldery:
+
+  galeria/    — 4 zdjęcia wnętrza (te duże, w sekcji GALERIA)
+  materialy/  — 4 zbliżenia faktur (próbki materiałów)
+
+NAZWY PLIKÓW
+------------
+Nazwij pliki po prostu:  1  2  3  4
+Rozszerzenie dowolne — .jpg, .jpeg, .png, .HEIC (prosto z iPhone'a też jest OK).
+
+Przykład:
+  do-wrzucenia/mieszkanie-olsztyn/galeria/1.HEIC
+  do-wrzucenia/mieszkanie-olsztyn/galeria/2.jpg
+  do-wrzucenia/mieszkanie-olsztyn/materialy/1.jpg
+
+WAŻNE
+-----
+• Numer pliku = numer wiersza w Excelu.
+  Plik "1" w galeria/ opisujesz w wierszu "Zdjęcie 1".
+  Plik "1" w materialy/ to wiersz "Materiał 1".
+
+• NIE zmniejszaj i nie kompresuj zdjęć. Im większy oryginał, tym lepiej —
+  zmniejszanie i konwersję robimy po swojej stronie.
+
+• Brak zdjęcia? Zostaw puste miejsce i nie wypełniaj wiersza w Excelu.
+  Nie wstawiaj zdjęć zastępczych.
+
+• Zdjęcia pionowe i poziome są OK — orientację rozpoznajemy automatycznie.
