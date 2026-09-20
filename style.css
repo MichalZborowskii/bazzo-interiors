@@ -347,11 +347,15 @@ footer .logo img{height:25px}
 .zgody-kat input:disabled{opacity:.5;cursor:default}
 .zgody-szczegoly .zgody-akcje{margin-top:6px}
 .zgody-szczegoly .zgody-tak{flex:1 1 100%}
-/* Link "Pliki cookie" w stopce - rozmiar reszty drobnego tekstu stopki. */
-footer .zgody-link{font-size:9px;letter-spacing:1px;border-bottom:1px solid var(--line);
-  padding-bottom:2px}
-footer .zgody-link:hover{border-color:var(--ink)}
-@media(max-width:950px){footer .zgody-link{font-size:8px}}
+/* Linki prawne w stopce - rozmiar reszty drobnego tekstu stopki. */
+footer .zgody-link,footer .polityka-link{font-size:9px;letter-spacing:1px;
+  border-bottom:1px solid var(--line);padding-bottom:2px}
+footer .zgody-link:hover,footer .polityka-link:hover{border-color:var(--ink)}
+@media(max-width:950px){footer .zgody-link,footer .polityka-link{font-size:8px}}
+/* Link do polityki w treści banera - podkreślony, żeby był widoczny. */
+.zgody-panel p a{color:var(--forest);font-weight:600;
+  border-bottom:1px solid rgba(23,63,54,.35);transition:border-color .25s}
+.zgody-panel p a:hover{border-color:var(--forest)}
 @media(max-width:680px){
   .zgody{padding:16px}
   .zgody-panel{padding:26px 22px 22px}
@@ -367,3 +371,30 @@ footer .zgody-link:hover{border-color:var(--ink)}
 }
 /* Strona nie scrolluje się pod modalem. */
 body.zgody-blokada{overflow:hidden}
+
+/* ---------- Dokument tekstowy (polityka prywatności) ---------- */
+.dokument{padding:0 4.5% 90px;max-width:820px}
+.dokument-data{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
+  color:#6b736d;margin:0 0 40px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.dokument h2{font-size:19px;letter-spacing:-.3px;line-height:1.35;margin:44px 0 14px;
+  text-transform:uppercase;font-weight:600}
+.dokument h2:first-of-type{margin-top:0}
+.dokument h3{font-size:14px;letter-spacing:.2px;margin:26px 0 10px;
+  text-transform:uppercase;font-weight:600;color:var(--forest)}
+.dokument p{font-size:15px;line-height:1.75;margin:0 0 16px;color:#3c433e}
+.dokument ul{margin:0 0 18px;padding-left:20px}
+.dokument li{font-size:15px;line-height:1.75;margin-bottom:9px;color:#3c433e}
+.dokument strong{font-weight:600;color:var(--ink)}
+.dokument a{border-bottom:1px solid var(--line);transition:border-color .25s}
+.dokument a:hover{border-color:var(--ink)}
+.dokument code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
+  background:rgba(37,43,39,.07);padding:2px 6px}
+.dokument-stopka{margin-top:50px;padding-top:22px;border-top:1px solid var(--line);
+  font-size:13px;color:#6b736d}
+@media(max-width:680px){
+  .dokument{padding:0 6% 60px}
+  .dokument h2{font-size:17px;margin:36px 0 12px}
+  .dokument h3{font-size:13px}
+  .dokument p,.dokument li{font-size:14px;line-height:1.7}
+  .dokument-data{margin-bottom:30px}
+}
