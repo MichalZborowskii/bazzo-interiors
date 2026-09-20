@@ -120,3 +120,83 @@
   const breakpoint = matchMedia('(max-width: 680px)');
   on(breakpoint, 'change', event => { if (!event.matches) toggleMenu(false); });
 })();
+
+/* Baner zgód sterujący Google Consent Mode v2.
+   Wybór trafia do localStorage, a przy kolejnych wizytach jest odtwarzany
+   w <head> jeszcze przed załadowaniem GTM. */
+(() => {
+  const baner = document.getElementById('zgody');
+  if (!baner) return;
+  const KLUCZ = 'bazzo-zgody';
+  const szczegoly = baner.querySelector('#zgody-szczegoly');
+  const wiecej = baner.querySelector('[data-zgoda="ustawienia"]');
+  const analityka = baner.querySelector('#zg-analityka');
+  const marketing = baner.querySelector('#zg-marketing');
+
+  const zapisz = (wybor) => {
+    try { localStorage.setItem(KLUCZ, JSON.stringify(wybor)); } catch (e) {}
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        ad_storage: wybor.marketing ? 'granted' : 'denied',
+        ad_user_data: wybor.marketing ? 'granted' : 'denied',
+        ad_personalization: wybor.marketing ? 'granted' : 'denied',
+        analytics_storage: wybor.analityka ? 'granted' : 'denied',
+        personalization_storage: wybor.analityka ? 'granted' : 'denied'
+      });
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'zgody_zapisane', zgody: wybor });
+    baner.removeAttribute('data-widoczny');
+  };
+
+  const wczytaj = () => {
+    try { return JSON.parse(localStorage.getItem(KLUCZ)); } catch (e) { return null; }
+  };
+
+  // Checkboxy pokazują poprzedni wybór, żeby ponowne wejście w ustawienia
+  // nie sugerowało, że wszystko jest odznaczone.
+  const zapisany = wczytaj();
+  if (zapisany) {
+    analityka.checked = !!zapisany.analityka;
+    marketing.checked = !!zapisany.marketing;
+  }
+  if (!zapisany) baner.setAttribute('data-widoczny', '');
+
+  baner.addEventListener('click', (event) => {
+    const akcja = event.target.closest('[data-zgoda]')?.dataset.zgoda;
+    if (!akcja) return;
+    if (akcja === 'ustawienia') {
+      const otwarte = szczegoly.hasAttribute('data-otwarte');
+      szczegoly.toggleAttribute('data-otwarte', !otwarte);
+      wiecej.setAttribute('aria-expanded', String(!otwarte));
+      return;
+    }
+    if (akcja === 'wszystko') zapisz({ analityka: true, marketing: true });
+    if (akcja === 'nic') zapisz({ analityka: false, marketing: false });
+    if (akcja === 'wybrane') zapisz({ analityka: analityka.checked, marketing: marketing.checked });
+  });
+
+  // Ponowne otwarcie ustawień z linku "Pliki cookie" w stopce
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('a[href="#zgody"]')) return;
+    event.preventDefault();
+    const teraz = wczytaj();
+    if (teraz) {
+      analityka.checked = !!teraz.analityka;
+      marketing.checked = !!teraz.marketing;
+    }
+    baner.setAttribute('data-widoczny', '');
+    szczegoly.setAttribute('data-otwarte', '');
+    wiecej.setAttribute('aria-expanded', 'true');
+    baner.querySelector('#zgody-tytul').scrollIntoView({ block: 'nearest' });
+    analityka.focus();
+  });
+
+  // Esc zamyka baner tylko wtedy, gdy wybór już zapadł - inaczej
+  // dałoby się pominąć zgodę bez jej udzielenia.
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    if (!baner.hasAttribute('data-widoczny') || !wczytaj()) return;
+    baner.removeAttribute('data-widoczny');
+  });
+})();
