@@ -373,9 +373,9 @@ footer .zgody-link:hover,footer .polityka-link:hover{border-color:var(--ink)}
 body.zgody-blokada{overflow:hidden}
 
 /* ---------- Dokument tekstowy (polityka prywatności) ---------- */
-.dokument{padding:0 4.5% 90px;max-width:820px}
+.dokument{padding:40px 4.5% 90px;max-width:820px}
 .dokument-data{font-size:11px;letter-spacing:1.2px;text-transform:uppercase;
-  color:#6b736d;margin:0 0 40px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+  color:#6b736d;margin:0 0 42px}
 .dokument h2{font-size:19px;letter-spacing:-.3px;line-height:1.35;margin:44px 0 14px;
   text-transform:uppercase;font-weight:600}
 .dokument h2:first-of-type{margin-top:0}
@@ -392,9 +392,9 @@ body.zgody-blokada{overflow:hidden}
 .dokument-stopka{margin-top:50px;padding-top:22px;border-top:1px solid var(--line);
   font-size:13px;color:#6b736d}
 @media(max-width:680px){
-  .dokument{padding:0 6% 60px}
+  .dokument{padding:30px 6% 60px}
   .dokument h2{font-size:17px;margin:36px 0 12px}
   .dokument h3{font-size:13px}
   .dokument p,.dokument li{font-size:14px;line-height:1.7}
-  .dokument-data{margin-bottom:30px}
+  .dokument-data{margin-bottom:32px}
 }
