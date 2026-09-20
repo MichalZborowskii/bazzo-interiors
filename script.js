@@ -146,12 +146,32 @@
     }
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ event: 'zgody_zapisane', zgody: wybor });
-    baner.removeAttribute('data-widoczny');
+    ukryj();
   };
 
   const wczytaj = () => {
     try { return JSON.parse(localStorage.getItem(KLUCZ)); } catch (e) { return null; }
   };
+
+  let wracaFokusDo = null;
+
+  const pokaz = () => {
+    baner.setAttribute('data-widoczny', '');
+    baner.setAttribute('aria-modal', 'true');
+    document.body.classList.add('zgody-blokada');
+  };
+
+  const ukryj = () => {
+    baner.removeAttribute('data-widoczny');
+    baner.setAttribute('aria-modal', 'false');
+    document.body.classList.remove('zgody-blokada');
+    szczegoly.removeAttribute('data-otwarte');
+    wiecej.setAttribute('aria-expanded', 'false');
+    if (wracaFokusDo) { wracaFokusDo.focus(); wracaFokusDo = null; }
+  };
+
+  // Zamknąć bez wyboru można tylko wtedy, gdy zgoda już kiedyś zapadła.
+  const mozeZamknac = () => !!wczytaj();
 
   // Checkboxy pokazują poprzedni wybór, żeby ponowne wejście w ustawienia
   // nie sugerowało, że wszystko jest odznaczone.
@@ -159,8 +179,20 @@
   if (zapisany) {
     analityka.checked = !!zapisany.analityka;
     marketing.checked = !!zapisany.marketing;
+  } else {
+    pokaz();
+    // Po animacji wjazdu, żeby fokus nie przepadł przy starcie strony.
+    requestAnimationFrame(() => baner.querySelector('[data-zgoda="wszystko"]').focus());
   }
-  if (!zapisany) baner.setAttribute('data-widoczny', '');
+
+  // Gdy wybór jest wymagany, fokus nie może uciec poza modal (np. na pasek adresu
+  // i z powrotem na stronę pod spodem).
+  document.addEventListener('focusin', (event) => {
+    if (!baner.hasAttribute('data-widoczny') || mozeZamknac()) return;
+    if (!baner.contains(event.target)) {
+      baner.querySelector('[data-zgoda="wszystko"]').focus();
+    }
+  });
 
   baner.addEventListener('click', (event) => {
     const akcja = event.target.closest('[data-zgoda]')?.dataset.zgoda;
@@ -178,25 +210,48 @@
 
   // Ponowne otwarcie ustawień z linku "Pliki cookie" w stopce
   document.addEventListener('click', (event) => {
-    if (!event.target.closest('a[href="#zgody"]')) return;
+    const link = event.target.closest('a[href="#zgody"]');
+    if (!link) return;
     event.preventDefault();
     const teraz = wczytaj();
     if (teraz) {
       analityka.checked = !!teraz.analityka;
       marketing.checked = !!teraz.marketing;
     }
-    baner.setAttribute('data-widoczny', '');
+    wracaFokusDo = link;
+    pokaz();
     szczegoly.setAttribute('data-otwarte', '');
     wiecej.setAttribute('aria-expanded', 'true');
-    baner.querySelector('#zgody-tytul').scrollIntoView({ block: 'nearest' });
     analityka.focus();
   });
 
-  // Esc zamyka baner tylko wtedy, gdy wybór już zapadł - inaczej
-  // dałoby się pominąć zgodę bez jej udzielenia.
+  // Klik w przyciemnione tło zamyka - ale tylko przy zmianie zdania,
+  // nie przy pierwszej wizycie, gdzie wybór jest wymagany.
+  baner.addEventListener('mousedown', (event) => {
+    if (event.target === baner && mozeZamknac()) ukryj();
+  });
+
   document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape') return;
-    if (!baner.hasAttribute('data-widoczny') || !wczytaj()) return;
-    baner.removeAttribute('data-widoczny');
+    if (!baner.hasAttribute('data-widoczny')) return;
+
+    if (event.key === 'Escape') {
+      if (mozeZamknac()) ukryj();
+      return;
+    }
+
+    // Fokus nie wychodzi poza modal, dopóki wybór nie zapadł.
+    if (event.key !== 'Tab') return;
+    const pola = [...baner.querySelectorAll('button, input:not(:disabled), a[href]')]
+      .filter(el => el.offsetParent !== null);
+    if (!pola.length) return;
+    const pierwszy = pola[0];
+    const ostatni = pola[pola.length - 1];
+    if (event.shiftKey && document.activeElement === pierwszy) {
+      event.preventDefault();
+      ostatni.focus();
+    } else if (!event.shiftKey && document.activeElement === ostatni) {
+      event.preventDefault();
+      pierwszy.focus();
+    }
   });
 })();
